@@ -1,6 +1,6 @@
 [submodule "packages/allegro-primitives"]
 	path = packages/allegro-primitives
-	url = https://github.com/kmaestro/allegro-primitives
+	url = https://github.com/kmaestro/allegro-primitives.git
 [submodule "packages/allegro"]
 	path = packages/allegro
-	url = https://github.com/kmaestro/allegro
+	url = https://github.com/kmaestro/allegro.git
