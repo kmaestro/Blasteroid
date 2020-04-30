@@ -1,0 +1,33 @@
+{
+    "name": "maestro/blasteroid",
+    "authors": [
+        {
+            "name": "Дмитрий",
+            "email": "polishuk1003@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-ffi": "*",
+        "kmaestro/allegro": "*",
+        "kmaestro/allegro-primitives": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/allegro"
+        },
+        {
+            "type": "path",
+            "url": "./packages/allegro-primitives"
+        }
+    ],
+    "require-dev": {
+        "serafim/ffi-ide-helper": "^1.0"
+    }
+}
