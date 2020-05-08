@@ -20,6 +20,9 @@ class Asteroid
 
     public function __construct()
     {
+        $this->sy = rand(1, 500);
+        $this->sx = rand(1, 500);
+        $this->scale = rand(50, 100)/100;
         $this->heading = rand(1, 1000)/100;
         $this->speed = rand(1, 2000)/1000;
         $this->twist = rand(1, 1000)/1000;
@@ -54,12 +57,12 @@ class Asteroid
     {
         $this->calculateAsteroidTwisting();
 
-//        $this->heading++;
 	    $deltaX = sin($this->heading) * $this->speed;
 	    $deltaY = cos($this->heading) * $this->speed;
 
 	    $this->sx += $deltaX;
 	    $this->sy -= $deltaY;
+	    $this->calculateAsteroidTwisting();
     }
 
     public function calculateAsteroidTwisting()
