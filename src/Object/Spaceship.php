@@ -3,6 +3,7 @@
 namespace App\Object;
 
 use AllegroPrimitives\Primitives;
+use App\Game\Direction;
 
 class Spaceship
 {
@@ -43,16 +44,16 @@ class Spaceship
 
     }
 
-    public function rotate($direction) {
-        if ($direction == 82)
+    public function rotate(Direction $direction) {
+        if ($direction->left)
             $this->heading -= self::SHIP_DEGREE_OF_ROTATION_RADIAN;
-        else if ($direction == 83)
+        else if ($direction->right)
             $this->heading += self::SHIP_DEGREE_OF_ROTATION_RADIAN;
     }
 
-    public function accelerate($direction)
+    public function accelerate(Direction $direction)
     {
-        if ($direction == 84) {
+        if ($direction->up) {
             if ($this->speed < self::SHIP_MAX_SPEED)
                 $this->speed += self::SHIP_ACCELERATION_GRADIENT;
             if ($this->speed > self::SHIP_MAX_SPEED)
@@ -60,6 +61,7 @@ class Spaceship
 
             $this->drift_heading = $this->heading;
             $this->is_drifting = false;
+            $this->calculatePosition();
         }
 
     }

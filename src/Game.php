@@ -4,6 +4,7 @@ namespace App;
 
 use Allegro\Allegro;
 use AllegroPrimitives\Primitives;
+use App\Game\Direction;
 use App\Object\Blast;
 use App\Object\Spaceship;
 use App\Service\CreateAsteroid\Asteroid;
@@ -27,7 +28,9 @@ class Game
 
     public function run()
     {
+        $direction = new Direction();
         $display = $this->allegro->al_create_display(500, 500);
+        $this->allegro->al_set_window_title($display, 'blasteroid');
         $queue = $this->allegro->al_create_event_queue();
         $timer = $this->allegro->al_create_timer(1.0 / 60);
         $this->allegro->al_start_timer($timer);
@@ -49,39 +52,9 @@ class Game
             if ($event->type == 42) {
                 $this->running = false;
             }
-            if (
-                $event->keyboard->keycode == Keyboard\Key::ALLEGRO_KEY_LEFT
-                || $event->keyboard->keycode == Keyboard\Key::ALLEGRO_KEY_RIGHT) {
-                $rotate = ($event->type == Event\Key::ALLEGRO_EVENT_KEY_CHAR)?$event->keyboard->keycode:false;
-                $event->keyboard->keycode = 0;
-            }
-
-            if ($event->keyboard->keycode == (Keyboard\Key::ALLEGRO_KEY_UP)) {
-                $accelerate = ($event->type == Event\Key::ALLEGRO_EVENT_KEY_CHAR)?$event->keyboard->keycode:false;
-                $event->keyboard->keycode = 0;
-            }
-
-            if ($event->keyboard->keycode == Keyboard\Key::ALLEGRO_KEY_SPACE) {
-                if (!$blast){
-                    $blast = new Blast($spaceship);
-                    $blast->draw();
-                }
-
-            }
-
-            if ($rotate) {
-                $spaceship->rotate($rotate);
-                $spaceship->calculatePosition();
-            }
-
-            if ($accelerate) {
-                $spaceship->accelerate($accelerate);
-                $spaceship->calculatePosition();
-            }
-
-            if ($blast) {
-                $blast->calculateBlastPosition();
-            }
+            $direction->control($event);
+            $spaceship->rotate($direction);
+            $spaceship->accelerate($direction);
             \App\Service\CreateAsteroid\Asteroid::s();
             $this->primitives->al_flip_display();
             $this->primitives->al_clear_to_color($this->primitives->al_map_rgb(0, 0, 0));
