@@ -5,6 +5,7 @@ namespace App;
 use Allegro\Allegro;
 use AllegroPrimitives\Primitives;
 use App\Game\Direction;
+use App\Game\Nodes\BlastNode;
 use App\Object\Blast;
 use App\Object\Spaceship;
 use App\Service\CreateAsteroid\Asteroid;
@@ -44,6 +45,7 @@ class Game
         Asteroid::generate();
         $rotate = false;
         $accelerate = false;
+        $blastNode = new BlastNode();
         while ($this->running) {
             $old_time = $this->primitives->al_get_time();
             $event = $this->allegro->new('struct _ALLEGRO_EVENT');
@@ -55,6 +57,8 @@ class Game
             $direction->control($event);
             $spaceship->rotate($direction);
             $spaceship->accelerate($direction);
+            $blastNode->create($direction, $spaceship);
+            $blastNode->calculatePosition();
             \App\Service\CreateAsteroid\Asteroid::s();
             $this->primitives->al_flip_display();
             $this->primitives->al_clear_to_color($this->primitives->al_map_rgb(0, 0, 0));
