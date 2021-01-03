@@ -8,7 +8,7 @@ class Asteroid
 {
     public float $sx = 110.0;
     public float $sy = 110.0;
-    public float $heading = 0.5;
+    public float $heading = 1.5;
     public float $twist = 0.5;
     public float $speed = 0.5;
     public float $scale = 1.1;
@@ -24,7 +24,7 @@ class Asteroid
         $this->sx = rand(1, 500);
         $this->scale = rand(50, 100)/100;
         $this->heading = rand(1, 1000)/100;
-        $this->speed = rand(1, 2000)/1000;
+        $this->speed = rand(1000, 2000)/1000;
         $this->twist = rand(1, 1000)/1000;
         $this->color = Primitives::getInstance()->al_map_rgb(0, 255, 0);
     }
@@ -55,7 +55,7 @@ class Asteroid
 
     public function calculateAsteroidPosition()
     {
-        $this->calculateAsteroidTwisting();
+//        $this->calculateAsteroidTwisting();
 
 	    $deltaX = sin($this->heading) * $this->speed;
 	    $deltaY = cos($this->heading) * $this->speed;
@@ -68,5 +68,14 @@ class Asteroid
     public function calculateAsteroidTwisting()
     {
         $this->twist += $this->rot_velocity;
+
+        if ($this->sy < 0)
+            $this->sy += SCREEN_HEIGHT;
+        if ($this->sy > SCREEN_HEIGHT)
+            $this->sy -= SCREEN_HEIGHT;
+        if ($this->sx < 0)
+            $this->sx += SCREEN_WIDTH;
+        if ($this->sx > SCREEN_WIDTH)
+            $this->sx -= SCREEN_WIDTH;
     }
 }

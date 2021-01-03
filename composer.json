@@ -10,7 +10,9 @@
         "php": ">=7.4",
         "ext-ffi": "*",
         "kmaestro/allegro": "*",
-        "kmaestro/allegro-primitives": "*"
+        "kmaestro/allegro-primitives": "*",
+        "allegro-php/allegro": "*",
+        "allegro-php/primitives": "*"
     },
     "autoload": {
         "psr-4": {
@@ -25,6 +27,14 @@
         {
             "type": "path",
             "url": "./packages/allegro-primitives"
+        },
+        {
+            "type": "path",
+            "url": "./packages/AllegroPHP/allegro"
+        },
+        {
+            "type": "path",
+            "url": "./packages/AllegroPHP/allegro-primitives"
         }
     ],
     "require-dev": {

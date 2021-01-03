@@ -3,7 +3,6 @@
 namespace App\Service\CreateAsteroid;
 
 use AllegroPrimitives\Primitives;
-use http\Exception\BadUrlException;
 
 class Asteroid
 {
@@ -29,7 +28,7 @@ class Asteroid
         }
     }
 
-    public static function s()
+    public static function draw()
     {
         foreach (self::$asteroids as $v) {
             $v->draw();

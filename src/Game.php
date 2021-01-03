@@ -24,7 +24,7 @@ class Game
     {
         $this->allegro = \Allegro\Allegro::getInstance();
         $this->primitives = \AllegroPrimitives\Primitives::getInstance();
-        $init = $this->allegro->al_init();
+        $init = $this->allegro->al_install_system( \Allegro\Allegro::getInstance()->info->version, function (){});
     }
 
     public function run()

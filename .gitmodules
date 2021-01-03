@@ -4,3 +4,9 @@
 [submodule "packages/allegro"]
 	path = packages/allegro
 	url = https://github.com/kmaestro/allegro.git
+[submodule "packages/AllegroPHP/Primitives"]
+	path = packages/AllegroPHP/Primitives
+	url = https://github.com/AllegroPHP/allegro-primitives.git
+[submodule "packages/AllegroPHP/Allegro"]
+	path = packages/AllegroPHP/Allegro
+	url = https://github.com/AllegroPHP/allegro.git

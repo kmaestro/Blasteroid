@@ -24,19 +24,31 @@ class Spaceship
     public $bc;
     private bool $is_drifting = true;
     private float $drift_heading = 0.1;
+    private Bbox $bbox;
+    private $transform;
 
     public function __construct()
     {
         $this->color = Primitives::getInstance()->al_map_rgb(0, 255, 0);
+        $this->bbox = new Bbox(
+            new Point(SCREEN_WIDTH/2, SCREEN_HEIGHT/2),
+            0,
+            Primitives::getInstance()->al_map_rgb(255, 255, 255),
+            12,
+            10,
+            10,
+            10
+        );
+
+        $this->transform = Primitives::getInstance()->new('ALLEGRO_TRANSFORM');
     }
 
     public function draw()
     {
-        $transform = Primitives::getInstance()->new('struct _ALLEGRO_TRANSFORM');
-        Primitives::getInstance()->al_identity_transform(Primitives::addr($transform));
-        Primitives::getInstance()->al_rotate_transform(Primitives::addr($transform), $this->heading);
-        Primitives::getInstance()->al_translate_transform(Primitives::addr($transform), $this->sx, $this->sy);
-        Primitives::getInstance()->al_use_transform(Primitives::addr($transform));
+        Primitives::getInstance()->al_identity_transform(Primitives::addr($this->transform));
+        Primitives::getInstance()->al_rotate_transform(Primitives::addr($this->transform), $this->heading);
+        Primitives::getInstance()->al_translate_transform(Primitives::addr($this->transform), $this->sx, $this->sy);
+        Primitives::getInstance()->al_use_transform(Primitives::addr($this->transform));
         Primitives::getInstance()->al_draw_line(-8, 9, 0, -11, $this->color, 3.0);
         Primitives::getInstance()->al_draw_line(0, -11, 8, 9, $this->color, 3.0);
         Primitives::getInstance()->al_draw_line(-6, 4, -1, 4, $this->color, 3.0);
@@ -78,6 +90,15 @@ class Spaceship
 
         $this->sx += $deltaX;
         $this->sy -= $deltaY;
+
+        if ($this->sy < 0)
+            $this->sy += SCREEN_WIDTH;
+        if ($this->sy > SCREEN_HEIGHT)
+            $this->sy -= SCREEN_HEIGHT;
+        if ($this->sx < 0)
+            $this->sx += SCREEN_WIDTH;
+        if ($this->sx > SCREEN_WIDTH)
+            $this->sx -= SCREEN_WIDTH;
     }
 
     public function driftShip()
