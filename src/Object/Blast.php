@@ -2,7 +2,8 @@
 
 namespace App\Object;
 
-use AllegroPrimitives\Primitives;
+use AllegroPHP\Allegro\Allegro;
+use AllegroPHP\Primitives\Primitives;
 
 class Blast
 {
@@ -24,17 +25,17 @@ class Blast
         $this->sy = $spaceship->sy - $deltaY;
 
         $this->speed = 3.0;
-        $this->color = Primitives::getInstance()->al_map_rgb(255, 0, 0);
+        $this->color = Allegro::getInstance()->info->ffi->al_map_rgb(255, 0, 0);
     }
 
     public function draw(): void
     {
-        $transform = Primitives::getInstance()->new('struct _ALLEGRO_TRANSFORM');
-        $primitives = Primitives::getInstance();
-        $primitives->al_identity_transform(Primitives::addr($transform));
-        $primitives->al_rotate_transform(Primitives::addr($transform), $this->heading);
-        $primitives->al_translate_transform(Primitives::addr($transform), $this->sx, $this->sy);
-        $primitives->al_use_transform(Primitives::addr($transform));
+        $transform = Allegro::getInstance()->new('struct _ALLEGRO_TRANSFORM');
+        $primitives = Primitives::getInstance()->info->ffi;
+        $primitives->al_identity_transform(\FFI::addr($transform));
+        $primitives->al_rotate_transform(\FFI::addr($transform), $this->heading);
+        $primitives->al_translate_transform(\FFI::addr($transform), $this->sx, $this->sy);
+        $primitives->al_use_transform(\FFI::addr($transform));
 
         $primitives->al_draw_line(0, 0, 0, -3, $this->color, 20.0);
     }

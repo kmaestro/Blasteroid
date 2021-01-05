@@ -2,7 +2,8 @@
 
 namespace App\Object;
 
-use AllegroPrimitives\Primitives;
+use AllegroPHP\Allegro\Allegro;
+use AllegroPHP\Primitives\Primitives;
 
 class Asteroid
 {
@@ -26,31 +27,34 @@ class Asteroid
         $this->heading = rand(1, 1000)/100;
         $this->speed = rand(1000, 2000)/1000;
         $this->twist = rand(1, 1000)/1000;
-        $this->color = Primitives::getInstance()->al_map_rgb(0, 255, 0);
+        $this->color = Allegro::getInstance()->info->ffi->al_map_rgb(0, 255, 0);
     }
 
     public function draw()
     {
-        $transform = Primitives::getInstance()->new('struct _ALLEGRO_TRANSFORM');
-	    Primitives::getInstance()->al_identity_transform(Primitives::addr($transform));
-	    Primitives::getInstance()->al_rotate_transform(Primitives::addr($transform), $this->twist);
-	    Primitives::getInstance()->al_scale_transform(Primitives::addr($transform), $this->scale, $this->scale);
-	    Primitives::getInstance()->al_translate_transform(Primitives::addr($transform), $this->sx, $this->sy);
-	    Primitives::getInstance()->al_use_transform(Primitives::addr($transform));
+        $transform = Allegro::getInstance()->info->ffi->new('ALLEGRO_TRANSFORM');
+        $primitives = Primitives::getInstance()->info->ffi;
+        $color = $primitives->cast('ALLEGRO_COLOR',$this->color);
+        $allegro = Allegro::getInstance()->info->ffi;
+        $allegro->al_identity_transform(\FFI::addr($transform));
+        $allegro->al_rotate_transform(\FFI::addr($transform), $this->twist);
+        $allegro->al_scale_transform(\FFI::addr($transform), $this->scale, $this->scale);
+        $allegro->al_translate_transform(\FFI::addr($transform), $this->sx, $this->sy);
+        $allegro->al_use_transform(\FFI::addr($transform));
 	    $this->transform = $transform;
 
-	    Primitives::getInstance()->al_draw_line(-20, 20, -25, 5, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(-25, 5, -25, -10, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(-25, -10, -5, -10, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(-5, -10, -10, -20, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(-10, -20, 5, -20, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(5, -20, 20, -10, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(20, -10, 20, -5, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(20, -5, 0, 0, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(0, 0, 20, 10, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(20, 10, 10, 20, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(10, 20, 0, 15, $this->color, 2.0);
-	    Primitives::getInstance()->al_draw_line(0, 15, -20, 20, $this->color, 2.0);
+	    $primitives->al_draw_line(-20, 20, -25, 5, $color, 2.0);
+        $primitives->al_draw_line(-25, 5, -25, -10, $color, 2.0);
+        $primitives->al_draw_line(-25, -10, -5, -10, $color, 2.0);
+        $primitives->al_draw_line(-5, -10, -10, -20, $color, 2.0);
+        $primitives->al_draw_line(-10, -20, 5, -20, $color, 2.0);
+        $primitives->al_draw_line(5, -20, 20, -10, $color, 2.0);
+        $primitives->al_draw_line(20, -10, 20, -5, $color, 2.0);
+        $primitives->al_draw_line(20, -5, 0, 0, $color, 2.0);
+        $primitives->al_draw_line(0, 0, 20, 10, $color, 2.0);
+        $primitives->al_draw_line(20, 10, 10, 20, $color, 2.0);
+        $primitives->al_draw_line(10, 20, 0, 15, $color, 2.0);
+        $primitives->al_draw_line(0, 15, -20, 20, $color, 2.0);
     }
 
     public function calculateAsteroidPosition()

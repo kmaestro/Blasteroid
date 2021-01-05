@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use Allegro\Allegro;
+use AllegroPHP\Allegro\Allegro;
 
 class Timer
 {

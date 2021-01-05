@@ -2,7 +2,8 @@
 
 namespace App\Object;
 
-use AllegroPrimitives\Primitives;
+use AllegroPHP\Allegro\Allegro;
+use AllegroPHP\Primitives\Primitives;
 use App\Game\Direction;
 
 class Spaceship
@@ -29,30 +30,33 @@ class Spaceship
 
     public function __construct()
     {
-        $this->color = Primitives::getInstance()->al_map_rgb(0, 255, 0);
+        $this->color = Allegro::getInstance()->info->ffi->al_map_rgb(0, 255, 0);
         $this->bbox = new Bbox(
             new Point(SCREEN_WIDTH/2, SCREEN_HEIGHT/2),
             0,
-            Primitives::getInstance()->al_map_rgb(255, 255, 255),
+            Allegro::getInstance()->info->ffi->al_map_rgb(255, 255, 255),
             12,
             10,
             10,
             10
         );
 
-        $this->transform = Primitives::getInstance()->new('ALLEGRO_TRANSFORM');
+        $this->transform = Allegro::getInstance()->info->ffi->new('ALLEGRO_TRANSFORM');
     }
 
     public function draw()
     {
-        Primitives::getInstance()->al_identity_transform(Primitives::addr($this->transform));
-        Primitives::getInstance()->al_rotate_transform(Primitives::addr($this->transform), $this->heading);
-        Primitives::getInstance()->al_translate_transform(Primitives::addr($this->transform), $this->sx, $this->sy);
-        Primitives::getInstance()->al_use_transform(Primitives::addr($this->transform));
-        Primitives::getInstance()->al_draw_line(-8, 9, 0, -11, $this->color, 3.0);
-        Primitives::getInstance()->al_draw_line(0, -11, 8, 9, $this->color, 3.0);
-        Primitives::getInstance()->al_draw_line(-6, 4, -1, 4, $this->color, 3.0);
-        Primitives::getInstance()->al_draw_line(6, 4, 1, 4, $this->color, 3.0);
+        $primitives = Primitives::getInstance()->info->ffi;
+        $color = $primitives->cast('ALLEGRO_COLOR',$this->color);
+        $allegro = Allegro::getInstance()->info->ffi;
+        $allegro->al_identity_transform(\FFI::addr($this->transform));
+        $allegro->al_rotate_transform(\FFI::addr($this->transform), $this->heading);
+        $allegro->al_translate_transform(\FFI::addr($this->transform), $this->sx, $this->sy);
+        $allegro->al_use_transform(\FFI::addr($this->transform));
+        $primitives->al_draw_line(-8, 9, 0, -11, $color, 3.0);
+        $primitives->al_draw_line(0, -11, 8, 9, $color, 3.0);
+        $primitives->al_draw_line(-6, 4, -1, 4, $color, 3.0);
+        $primitives->al_draw_line(6, 4, 1, 4, $color, 3.0);
 
     }
 

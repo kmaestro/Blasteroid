@@ -47,13 +47,10 @@ $audio =  FFI::cdef(
     'liballegro_audio.so'
 );
 
-$loader = new Loader();
-$allegroInfo = $loader->load(new \Allegro\Library());
+$allegroPrimitives = \AllegroPHP\Primitives\Primitives::getInstance()->info->ffi;
+$allegro = \AllegroPHP\Allegro\Allegro::getInstance()->info->ffi;
 
-$allegroPrimitives = $loader->load(new \AllegroPrimitives\Library())->ffi;
-$allegro = \Allegro\Allegro::getInstance()->info->ffi;
-
-$init = $allegro->al_install_system( \Allegro\Allegro::getInstance()->info->version, function (){});
+$init = $allegro->al_install_system($allegro->al_get_allegro_version(), function (){});
 
 if (!$init) {
     fprintf(STDERR, 'Не удалось инициализировать allegro!' . PHP_EOL);
@@ -105,9 +102,9 @@ $allegro->al_register_event_source($event_queue, $allegro->al_get_timer_event_so
 
 
 /* Set background black */
-$allegroPrimitives->al_clear_to_color($allegroPrimitives->al_map_rgb(0, 0, 0));
+$allegro->al_clear_to_color($allegro->al_map_rgb(0, 0, 0));
 
-$allegroPrimitives->al_flip_display();
+$allegro->al_flip_display();
 
 $direction = new Direction();
 $spaceship = new  \App\Object\Spaceship();
@@ -158,19 +155,19 @@ while (!$doexit)
 
     } elseif ($event->type == 10) {
         switch ($event->keyboard->keycode) {
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_UP:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::UP:
                 $keys['UP'] = 1;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_DOWN:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::DOWN:
                 $keys['DOWN'] = 1;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_RIGHT:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::RIGHT:
                 $keys['RIGHT'] = 1;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_LEFT:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::LEFT:
                 $keys['LEFT'] = 1;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_SPACE:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::SPACE:
                 if (!$keys['SPACE']) {
                     $blasts[] = new \App\Object\Blast($spaceship);
                 }
@@ -179,19 +176,19 @@ while (!$doexit)
         }
     } elseif ($event->type == 12) {
         switch ($event->keyboard->keycode) {
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_UP:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::UP:
                 $keys['UP'] = 0;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_DOWN:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::DOWN:
                 $keys['DOWN'] = 0;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_RIGHT:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::RIGHT:
                 $keys['RIGHT'] = 0;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_LEFT:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::LEFT:
                 $keys['LEFT'] = 0;
                 break;
-            case Allegro\Kernel\Keyboard\Key::ALLEGRO_KEY_SPACE:
+            case \AllegroPHP\Allegro\Event\Keycode\Keycode::SPACE:
                 $keys['SPACE'] = 0;
                 break;
         }
@@ -199,8 +196,8 @@ while (!$doexit)
         $doexit = 1;
     }
 
-    $allegroPrimitives->al_flip_display();
-    $allegroPrimitives->al_clear_to_color($allegroPrimitives->al_map_rgb(0, 0, 0));
+    $allegro->al_flip_display();
+    $allegro->al_clear_to_color($allegro->al_map_rgb(0, 0, 0));
 
 }
 
